@@ -1,0 +1,68 @@
+<!DOCTYPE html>  
+<html>  
+  <head>  
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css">
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+    <script>  
+        $(window).ready(function () {
+    $('#btnInit').click(initiate_geolocation);
+});
+
+function initiate_geolocation() {
+    navigator.geolocation.getCurrentPosition(handle_geolocation_query, handle_errors);
+}
+
+function handle_errors(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("user did not share geolocation data");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("could not detect current position");
+            break;
+        case error.TIMEOUT:
+            alert("retrieving position timed out");
+            break;
+        default:
+            alert("unknown error");
+            break;
+    }
+}
+
+function handle_geolocation_query(position) {
+
+    
+    //function to format date
+    var d = new Date(position.timestamp);
+    var hours = d.getHours(),
+       minutes = d.getMinutes(),
+       seconds = d.getSeconds(),
+        month = d.getMonth() + 1,
+        day = d.getDate(),
+       year = d.getFullYear() % 100;
+
+    function pad(d) {
+        return (d < 10 ? "0" : "") + d;
+    }
+    var formattedDate = pad(month) + "-" + pad(day) + "-" + pad(year) + " at " + pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+    //end function to format date                
+  
+      var alldata = ('Lat: ' + position.coords.latitude + '<br />' + 'Lon: ' + position.coords.longitude + '<br />' + 'TimeStamp: ' + formattedDate + '<br />' + 'Altitude: ' + position.coords.altitude + '<br />' + 'Accuracy: ' + position.coords.accuracy + '<br />' +  'AltitudeAccuracy: ' + position.coords.altitudeAccuracy + '<br />' + 'Heading: ' + position.coords.heading + '<br />' + 'Speed: ' + position.coords.speed);
+    
+$('#textarea1').html(alldata);
+}
+    </script>  
+  </head>  
+  <body>  
+    <div>  
+      <a data-role="button" data-transition="none" data-theme="e" href="#" id="btnInit">
+            Button
+      </a> 
+        
+    </div>  
+    <div id="textarea1" data-role="fieldcontain" style="height:250px;width:auto;display:block;text-align:left;">
+            
+      </div>
+  </body>  
+</html>  
